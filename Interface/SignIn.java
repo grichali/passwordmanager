@@ -64,24 +64,36 @@ public class SignIn extends JFrame{
         panel.add(signinButton);
 
         add(panel);
-        
         signinButton.addActionListener(new ActionListener() {
             @Override
-    public void actionPerformed(ActionEvent e) {
-
-        System.out.println("Username: " + usernameField.getText());
-        System.out.println("Password: " + new String(passwordField.getPassword()));
-
-
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        UserRepository userRepository = new UserRepository(databaseConnector);
-
-        userRepository.loginUser( usernameField.getText() , passwordField.getText() );
-
-    }
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+        
+                System.out.println("Username: " + username);
+                System.out.println("password: " + password);
+        
+                DatabaseConnector databaseConnector = new DatabaseConnector();
+                try {
+                    UserRepository userRepository = new UserRepository(databaseConnector);
+        
+                    if (userRepository.loginUser(username, password)) {
+                        JOptionPane.showMessageDialog(null, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        // TODO: Add code to open a new window or perform other actions upon successful login.
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                        // TODO: Add code to display an error message to the user.
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "An error occurred. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+                    // TODO: Handle exceptions, display an error message, or log the exception.
+                } 
+            }
         });
-
+        
     }
+        
 
 
     public static void main(String[] args){

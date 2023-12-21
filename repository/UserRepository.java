@@ -93,8 +93,9 @@ public class UserRepository {
                 statement.setString(1, username);
                 statement.setString(2, password);
                 try (ResultSet result = statement.executeQuery()) {
-                    System.out.println(result.next());
-                    return result.next(); 
+                    boolean res = result.next();
+                    System.out.println(res);
+                    return res;
                 }
             }
         } catch (SQLException e) {
