@@ -93,12 +93,13 @@ public class UserRepository {
                 statement.setString(1, username);
                 statement.setString(2, password);
                 try (ResultSet result = statement.executeQuery()) {
-                    return result.next(); // Returns true if a matching user is found
+                    System.out.println(result.next());
+                    return result.next(); 
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // Return false if an error occurs
+        return false; 
     }
 }

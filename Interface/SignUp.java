@@ -33,9 +33,9 @@ public class SignUp extends JFrame {
         panel.setBackground(new Color(240, 240, 240)); // Light gray background color
 
         // Create a title label
-        titleLabel = new JLabel("Password Manager");
+        titleLabel = new JLabel("Sign Up");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Set font and style
-        titleLabel.setBounds(200, 10, 300, 40); // Set bounds
+        titleLabel.setBounds(300, 10, 300, 40); // Set bounds
 
         // Other components
         nomLabel = new JLabel("Nom:");
