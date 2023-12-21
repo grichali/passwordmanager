@@ -11,6 +11,6 @@ public class DatabaseConnector {
 
     public Connection getConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-        connection.setAutoCommit(true); // Ensure auto-commit is set
-        return connection;    }
+        return connection;    
+    }
 }

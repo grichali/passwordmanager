@@ -6,7 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import model.savedpasswords;
+
+import Model.savedpasswords;
 
 public class savedpasswordRepository {
     private DatabaseConnector databaseConnector;
@@ -78,7 +79,6 @@ public class savedpasswordRepository {
         }
     }
 
-    // Method to retrieve all savedpasswords entities
 // Method to retrieve all savedpasswords entities by user ID
 public List<savedpasswords> getPasswordsByUserId(String userId) {
     List<savedpasswords> passwordList = new ArrayList<>();

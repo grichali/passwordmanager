@@ -1,12 +1,12 @@
 import java.util.List;
 
-import model.User;
-import model.savedpasswords;
+import Model.User;
+import Model.savedpasswords;
 import repository.UserRepository;
 import repository.savedpasswordRepository;
 import repository.DatabaseConnector;
 
-public class Main {
+public class Main { 
 
     public static void main(String[] args) {
         // Initialize the database connector and repositories
