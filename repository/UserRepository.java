@@ -22,7 +22,7 @@ public class UserRepository {
         return new User(nom, prenom, username, password);
     }
 
-    public void saveUser(User user) {
+    public boolean saveUser(User user) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO users (nom, prenom, username, password) VALUES (?, ?, ?, ?)";
             System.out.println("Saving user: " + user.getUsername()); // Add this line
@@ -35,10 +35,16 @@ public class UserRepository {
                 statement.setString(3, user.getUsername());
                 statement.setString(4, user.getPassword());
                 int rowsAffected = statement.executeUpdate();
-                System.out.println("Rows affected: " + rowsAffected);                 
+                if (rowsAffected > 0) {
+                    return true;
+                }
+                else{
+                    return false;
+                }      
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

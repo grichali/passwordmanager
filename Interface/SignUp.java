@@ -1,22 +1,20 @@
 package Interface;
 
 import javax.swing.*;
- 
-import Model.User;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import Model.User;
 import repository.DatabaseConnector;
 import repository.UserRepository;
 
 public class SignUp extends JFrame {
 
-    private JButton signupButton;
+    private JButton btnSignUp;
     private JLabel nomLabel, prenomLabel, usernameLabel, passwordLabel, titleLabel;
-    private JTextField nomField, prenomField, usernameField;
-    private JPasswordField passwordField;
+    private JTextField nomField, prenomField, txtSignUserName;
+    private JPasswordField passwordField, txtSignPassword;
 
     public SignUp() {
         initUI();
@@ -24,96 +22,92 @@ public class SignUp extends JFrame {
 
     private void initUI() {
         setTitle("Password Manager");
-        setSize(700, 400);
+        setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create a JPanel with a background color
         JPanel panel = new JPanel();
         panel.setLayout(null);
-        panel.setBackground(new Color(240, 240, 240)); // Light gray background color
 
-        // Create a title label
-        titleLabel = new JLabel("Sign Up");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Set font and style
-        titleLabel.setBounds(300, 10, 300, 40); // Set bounds
+        titleLabel = new JLabel("Password Manager");
+        titleLabel.setFont(new Font("Courier New", Font.BOLD, 18));
+        titleLabel.setBounds(100, 10, 300, 30);
 
-        // Other components
-        nomLabel = new JLabel("Nom:");
-        prenomLabel = new JLabel("Prenom:");
-        usernameLabel = new JLabel("Username:");
-        passwordLabel = new JLabel("Password:");
+        JLabel signUpLabel = new JLabel("SIGN UP");
+        signUpLabel.setFont(new Font("Courier New", Font.PLAIN, 14));
+        signUpLabel.setBounds(150, 50, 100, 20);
 
+        nomLabel = new JLabel("Nom");
+        nomLabel.setBounds(50, 90, 100, 20);
         nomField = new JTextField();
+        nomField.setBounds(150, 90, 200, 25);
+
+        prenomLabel = new JLabel("Prenom");
+        prenomLabel.setBounds(50, 120, 100, 20);
         prenomField = new JTextField();
-        usernameField = new JTextField();
-        passwordField = new JPasswordField();
+        prenomField.setBounds(150, 120, 200, 25);
 
-        signupButton = new JButton("Sign Up");
+        usernameLabel = new JLabel("User Name");
+        usernameLabel.setBounds(50, 150, 100, 20);
+        txtSignUserName = new JTextField();
+        txtSignUserName.setBounds(150, 150, 200, 25);
 
-        // Set bounds for each component
-        nomLabel.setBounds(200, 60, 80, 25);
-        nomField.setBounds(200 + 100, 60, 200, 25);
+        passwordLabel = new JLabel("Password");
+        passwordLabel.setBounds(50, 180, 100, 20);
+        txtSignPassword = new JPasswordField();
+        txtSignPassword.setBounds(150, 180, 200, 25);
 
-        prenomLabel.setBounds(200, 90, 80, 25);
-        prenomField.setBounds(200 + 100, 90, 200, 25);
+        btnSignUp = new JButton("Sign Up");
+        btnSignUp.setBounds(150, 210, 100, 30);
 
-        usernameLabel.setBounds(200, 120, 80, 25);
-        usernameField.setBounds(200 + 100, 120, 200, 25);
-
-        passwordLabel.setBounds(200, 150, 80, 25);
-        passwordField.setBounds(200 + 100, 150, 200, 25);
-
-        signupButton.setBounds(200 + 100, 180, 100, 25);
-
-        // Add components to the panel
         panel.add(titleLabel);
+        panel.add(signUpLabel);
         panel.add(nomLabel);
         panel.add(nomField);
         panel.add(prenomLabel);
         panel.add(prenomField);
         panel.add(usernameLabel);
-        panel.add(usernameField);
+        panel.add(txtSignUserName);
         panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(signupButton);
+        panel.add(txtSignPassword);
+        panel.add(btnSignUp);
 
-        // Set layout for the frame
-        setLayout(new BorderLayout());
-        add(panel, BorderLayout.CENTER);
+        add(panel);
+        setResizable(false);
+        setLocationRelativeTo(null);
 
-        // Add action listener for the signup button
-signupButton.addActionListener(new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // Handle signup button click event
-        System.out.println("Nom: " + nomField.getText());
-        System.out.println("Prenom: " + prenomField.getText());
-        System.out.println("Username: " + usernameField.getText());
-        System.out.println("Password: " + new String(passwordField.getPassword()));
-
-        // Assuming you have a DatabaseConnector and UserRepository instance
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        UserRepository userRepository = new UserRepository(databaseConnector);
-
-        // Create a User object
-        User user = new User(
-                nomField.getText(),
-                prenomField.getText(),
-                usernameField.getText(),
-                new String(passwordField.getPassword())
-        );
-
-        // Save the user to the database
-        userRepository.saveUser(user);
+        btnSignUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleSignup();
+            }
+        });
     }
-});
+
+    private void handleSignup() {
+        String nom = nomField.getText();
+        String prenom = prenomField.getText();
+        String username = txtSignUserName.getText();
+        String password = new String(txtSignPassword.getPassword());
+
+        if (!nom.isEmpty() && !prenom.isEmpty() && !username.isEmpty() && !password.isEmpty()) {
+            DatabaseConnector databaseConnector = new DatabaseConnector();
+            UserRepository userRepository = new UserRepository(databaseConnector);
+
+            User user = new User(nom, prenom, username, password);
+
+            if (userRepository.saveUser(user)) {
+                JOptionPane.showMessageDialog(null, "Sign Up successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                SignIn signIn = new SignIn();
+                signIn.setVisible(true);
+                dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please fill in all the fields!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {
-        // Create an instance of the SignUp class
         SignUp signUp = new SignUp();
-
-        // Set the frame to be visible
         signUp.setVisible(true);
     }
 }
