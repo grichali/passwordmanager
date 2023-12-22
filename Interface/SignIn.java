@@ -31,7 +31,6 @@ public class SignIn extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        // Create a title label
         titleLabel = new JLabel("Sign In");
         titleLabel.setFont(new Font("Courier New", Font.BOLD, 18));
         titleLabel.setBounds(150, 10, 300, 30);
@@ -92,6 +91,9 @@ public class SignIn extends JFrame {
 
             if (userRepository.loginUser(username, password)) {
                 JOptionPane.showMessageDialog(null, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                Form form = new Form(username);
+                form.setVisible(true);
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }

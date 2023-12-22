@@ -78,12 +78,12 @@ public class SignUp extends JFrame {
         btnSignUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSignup();
+                Signup();
             }
         });
     }
 
-    private void handleSignup() {
+    private void Signup() {
         String nom = nomField.getText();
         String prenom = prenomField.getText();
         String username = txtSignUserName.getText();

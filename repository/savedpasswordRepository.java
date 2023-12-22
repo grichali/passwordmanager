@@ -17,7 +17,7 @@ public class savedpasswordRepository {
     }
 
     // Method to save a savedpasswords entity to the database
-    public void savePassword(savedpasswords savedpassword) {
+    public boolean savePassword(savedpasswords savedpassword) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO savedpasswords (websitename, email, password, userid) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -25,14 +25,19 @@ public class savedpasswordRepository {
                 statement.setString(2, savedpassword.getEmail());
                 statement.setString(3, savedpassword.getPassword());
                 statement.setString(4, savedpassword.getUserid());
-                statement.executeUpdate();
+    
+                int rowsAffected = statement.executeUpdate();
+    
+                return rowsAffected > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false; 
         }
     }
+    
 
-    // Method to retrieve a savedpasswords entity by website name
+
     public savedpasswords getPasswordByWebsite(String websiteName) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT * FROM savedpasswords WHERE websitename = ?";
