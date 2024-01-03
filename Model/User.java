@@ -1,18 +1,26 @@
 package Model;
 
+import org.mindrot.jbcrypt.BCrypt;
 
 public class User {
     
      private String nom ;
      private String prenom ; 
      private String username ;
-     private String password ;
-
-     public User(String nom, String prenom, String username, String password) {
+     private String password;
+     private String encryptedPassword;
+    
+     public User(String nom, String prenom, String username, String password, boolean isEncrypted) {
         this.nom = nom;
         this.prenom = prenom;
         this.username = username;
-        this.password = password;
+        if (isEncrypted) {
+            this.password = null;
+            this.encryptedPassword = password;
+        } else {
+            this.password = password;
+            this.encryptedPassword = encryptPassword(password);
+        }
     }
 
     public String getNom() {
@@ -49,5 +57,14 @@ public class User {
         this.username = username;
     }
 
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    private String encryptPassword(String password) {
+        // Implement your code to encrypt the password here
+        String encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
+        return encryptedPassword;
+    }
    
 }

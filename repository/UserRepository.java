@@ -19,7 +19,7 @@ public class UserRepository {
         String prenom = resultSet.getString("prenom");
         String username = resultSet.getString("username");
         String password = resultSet.getString("password");
-        return new User(nom, prenom, username, password);
+        return new User(nom, prenom, username, password, true);
     }
 
     public boolean saveUser(User user) {
@@ -33,7 +33,7 @@ public class UserRepository {
                 statement.setString(1, user.getNom());
                 statement.setString(2, user.getPrenom());
                 statement.setString(3, user.getUsername());
-                statement.setString(4, user.getPassword());
+                statement.setString(4, user.getEncryptedPassword());
                 int rowsAffected = statement.executeUpdate();
                 if (rowsAffected > 0) {
                     return true;
@@ -71,7 +71,7 @@ public class UserRepository {
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, user.getNom());
                 statement.setString(2, user.getPrenom());
-                statement.setString(3, user.getPassword());
+                statement.setString(3, user.getEncryptedPassword());
                 statement.setString(4, user.getUsername());
                 statement.executeUpdate();
             }
