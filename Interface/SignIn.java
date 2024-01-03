@@ -68,6 +68,8 @@ public class SignIn implements ActionListener {
         panel.add(signinButton);
         panel.add(createAccountLabel);
 
+        panel.setLocation((parentFrame.getWidth() - panel.getWidth()) / 2, (parentFrame.getHeight() - panel.getHeight()) / 2);
+
         signinButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

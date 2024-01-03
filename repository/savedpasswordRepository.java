@@ -56,7 +56,7 @@ public class SavedPasswordRepository {
     }
 
     // Method to update a savedpasswords entity in the database
-    public void updatePassword(SavedPasswords savedpassword) {
+    public boolean updatePassword(SavedPasswords savedpassword) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE savedpasswords SET email=?, password=?, userid=? WHERE websitename=?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -64,10 +64,16 @@ public class SavedPasswordRepository {
                 statement.setString(2, savedpassword.getPassword());
                 statement.setString(3, savedpassword.getUserid());
                 statement.setString(4, savedpassword.getWebsitename());
-                statement.executeUpdate();
+                int isUpdated = statement.executeUpdate();
+                if (isUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -83,6 +89,29 @@ public class SavedPasswordRepository {
             e.printStackTrace();
         }
     }
+    // Method to delete a savedpassword record by all the properties
+    public boolean deletePassword(SavedPasswords savedpassword) {
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "DELETE FROM savedpasswords WHERE websitename=? AND email=? AND password=? AND userid=?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, savedpassword.getWebsitename());
+                statement.setString(2, savedpassword.getEmail());
+                statement.setString(3, savedpassword.getPassword());
+                statement.setString(4, savedpassword.getUserid());
+                int isDeleted = statement.executeUpdate();
+                if (isDeleted == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
 // Method to retrieve all savedpasswords entities by user ID
 public List<SavedPasswords> getPasswordsByUserId(String userId) {

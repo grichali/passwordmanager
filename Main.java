@@ -1,6 +1,10 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,9 +25,17 @@ public class Main implements ActionListener {
 
     public void start() {
         mainFen = new JFrame("Password Manager");
-        mainFen.setSize(600, 400);
+        mainFen.setSize(700, 700);
         mainFen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Set the icon image
+        try {
+            BufferedImage iconImage = ImageIO.read(new File("Interface/Images/icon.jpg"));
+            mainFen.setIconImage(iconImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         menuBar = new JMenuBar();
         userMenu = new JMenu("User");
         userAccount = new JMenuItem("User Account");

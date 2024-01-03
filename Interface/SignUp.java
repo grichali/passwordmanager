@@ -16,7 +16,10 @@ public class SignUp {
     private JTextField nomField, prenomField, txtSignUserName;
     private JPasswordField passwordField, txtSignPassword;
     private JFrame parentFrame;
+    
 
+    // Set the location of the panel within the main JFrame
+    
     public SignUp(JFrame parentFrame) {
         this.parentFrame = parentFrame;
         initUI();
@@ -69,6 +72,7 @@ public class SignUp {
         panel.add(txtSignPassword);
         panel.add(btnSignUp);
 
+        panel.setLocation((parentFrame.getWidth() - panel.getWidth()) / 2, (parentFrame.getHeight() - panel.getHeight()) / 2);
         btnSignUp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
