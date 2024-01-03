@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import Model.SavedPasswords;
 
 public class SavedPasswordRepository {
@@ -78,15 +80,21 @@ public class SavedPasswordRepository {
     }
 
     // Method to delete a savedpasswords entity by website name
-    public void deletePasswordByWebsite(String websiteName) {
+    public boolean deletePasswordByWebsite(String websiteName) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM savedpasswords WHERE websitename=?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, websiteName);
-                statement.executeUpdate();
+                int isDeleted = statement.executeUpdate();
+                if (isDeleted > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
     // Method to delete a savedpassword record by all the properties
@@ -99,8 +107,10 @@ public class SavedPasswordRepository {
                 statement.setString(3, savedpassword.getPassword());
                 statement.setString(4, savedpassword.getUserid());
                 int isDeleted = statement.executeUpdate();
-                if (isDeleted == 0) {
+                if (isDeleted > 0) {
+                    
                     return true;
+        
                 } else {
                     return false;
                 }

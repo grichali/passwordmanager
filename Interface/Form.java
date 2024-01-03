@@ -134,13 +134,20 @@ public class Form extends JPanel {
             String password = (String) tableModel.getValueAt(selectedRow, 2);
 
             SavedPasswords savedPassword = new SavedPasswords(username, website, email, password);
-            passwordRepository.deletePassword(savedPassword);
+            boolean isDeleted = passwordRepository.deletePasswordByWebsite(website);
+            if (isDeleted) {
+                tableModel.removeRow(selectedRow);
+                 websiteField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+                JOptionPane.showMessageDialog(parentFrame, "Password deleted successfully");
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, "Password not found");
 
-            tableModel.removeRow(selectedRow);
+            }
+            
 
-            websiteField.setText("");
-            emailField.setText("");
-            passwordField.setText("");
+           
         }
     }
 
