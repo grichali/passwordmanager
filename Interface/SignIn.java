@@ -86,6 +86,7 @@ public class SignIn implements ActionListener {
 
             if (userRepository.loginUser(username, password)) {
                 sessionManager.loginUser(username);
+                signout.addActionListener(this);
                 parentFrame.getJMenuBar().getMenu(0).add(signout, 4);
                 JOptionPane.showMessageDialog(parentFrame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 Form form = new Form(parentFrame, username);

@@ -46,6 +46,7 @@ public class Main implements ActionListener {
         userMenu.add(signin);
         userMenu.add(signup);
         if (sessionManager.isLoggedIn()) {
+            signup.addActionListener(this);
             userMenu.add(signout);
         }
         userMenu.add(quitter);
