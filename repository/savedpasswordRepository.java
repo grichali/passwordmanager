@@ -7,17 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.savedpasswords;
+import Model.SavedPasswords;
 
-public class savedpasswordRepository {
+public class SavedPasswordRepository {
     private DatabaseConnector databaseConnector;
 
-    public savedpasswordRepository(DatabaseConnector databaseConnector) {
+    public SavedPasswordRepository(DatabaseConnector databaseConnector) {
         this.databaseConnector = databaseConnector;
     }
 
     // Method to save a savedpasswords entity to the database
-    public boolean savePassword(savedpasswords savedpassword) {
+    public boolean savePassword(SavedPasswords savedpassword) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO savedpasswords (websitename, email, password, userid) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -38,7 +38,7 @@ public class savedpasswordRepository {
     
 
 
-    public savedpasswords getPasswordByWebsite(String websiteName) {
+    public SavedPasswords getPasswordByWebsite(String websiteName) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT * FROM savedpasswords WHERE websitename = ?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -56,7 +56,7 @@ public class savedpasswordRepository {
     }
 
     // Method to update a savedpasswords entity in the database
-    public void updatePassword(savedpasswords savedpassword) {
+    public void updatePassword(SavedPasswords savedpassword) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE savedpasswords SET email=?, password=?, userid=? WHERE websitename=?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -85,8 +85,8 @@ public class savedpasswordRepository {
     }
 
 // Method to retrieve all savedpasswords entities by user ID
-public List<savedpasswords> getPasswordsByUserId(String userId) {
-    List<savedpasswords> passwordList = new ArrayList<>();
+public List<SavedPasswords> getPasswordsByUserId(String userId) {
+    List<SavedPasswords> passwordList = new ArrayList<>();
     try (Connection connection = databaseConnector.getConnection()) {
         String sql = "SELECT * FROM savedpasswords WHERE userid = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -105,12 +105,12 @@ public List<savedpasswords> getPasswordsByUserId(String userId) {
 
 
     // Helper method to map a ResultSet to a savedpasswords entity
-    private savedpasswords mapResultSetToSavedPassword(ResultSet resultSet) throws SQLException {
+    private SavedPasswords mapResultSetToSavedPassword(ResultSet resultSet) throws SQLException {
         String websitename = resultSet.getString("websitename");
         String email = resultSet.getString("email");
         String password = resultSet.getString("password");
         String userid = resultSet.getString("userid");
-        return new savedpasswords(websitename, email, password, userid);
+        return new SavedPasswords(websitename, email, password, userid);
     }
 
 

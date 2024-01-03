@@ -1,3 +1,4 @@
+
 package Interface;
 
 import javax.swing.*;
@@ -11,24 +12,21 @@ import repository.UserRepository;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
-public class SignIn extends JFrame {
-
+public class SignIn {
+    private JPanel panel;
     private JLabel usernamLabel, passwordLabel, titleLabel, createAccountLabel;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton signinButton;
+    private JFrame parentFrame;
 
-    public SignIn() {
+    public SignIn(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
         initUI();
     }
 
     public void initUI() {
-        setTitle("Password Manager");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(null);
 
         titleLabel = new JLabel("Sign In");
@@ -69,10 +67,6 @@ public class SignIn extends JFrame {
         panel.add(signinButton);
         panel.add(createAccountLabel);
 
-        add(panel);
-        setResizable(false);
-        setLocationRelativeTo(null);
-
         signinButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,27 +84,39 @@ public class SignIn extends JFrame {
             UserRepository userRepository = new UserRepository(databaseConnector);
 
             if (userRepository.loginUser(username, password)) {
-                JOptionPane.showMessageDialog(null, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(parentFrame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 Form form = new Form(username);
                 form.setVisible(true);
-                this.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentFrame, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JPanel getPanel() {
+        return panel;
+    }
+
+    private void openSignUpInterface() {
+        // Implement your code to open the SignUp interface here
+        try {
+            SignUp signUp = new SignUp(parentFrame);
+            parentFrame.setContentPane(signUp.getPanel());
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "An error occurred. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void openSignUpInterface() {
-        SignUp signUp = new SignUp();
-        signUp.setVisible(true);
-        this.dispose();
-    }
+    
 
-    public static void main(String[] args) {
-        SignIn signIn = new SignIn();
-        signIn.setVisible(true);
-    }
+    // public static void main(String[] args) {
+    //     SignIn signIn = new SignIn();
+    //     signIn.setVisible(true);
+    // }
 }

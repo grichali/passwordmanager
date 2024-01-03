@@ -7,8 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import repository.DatabaseConnector;
-import Model.savedpasswords;
-import repository.savedpasswordRepository;
+import Model.SavedPasswords;
+import repository.SavedPasswordRepository;
 
 public class Form extends JFrame {
 
@@ -17,12 +17,12 @@ public class Form extends JFrame {
     private JTable passwordTable;
     private String username;
     DatabaseConnector databaseConnector;
-    savedpasswordRepository passwordRepository;
+    SavedPasswordRepository passwordRepository;
 
     public Form(String username) {
         this.username = username;
         this.databaseConnector= new DatabaseConnector();
-        this.passwordRepository = new savedpasswordRepository(databaseConnector);
+        this.passwordRepository = new SavedPasswordRepository(databaseConnector);
         initUI();
         fillTableWithUserPasswords();
     }
@@ -96,7 +96,7 @@ public class Form extends JFrame {
         String password = passwordField.getText();
 
         if (!website.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-            savedpasswords s = new savedpasswords(website, email, password, username);
+            SavedPasswords s = new SavedPasswords(website, email, password, username);
 
             if (this.passwordRepository.savePassword(s)) {
                 JOptionPane.showMessageDialog(null, "The password has been saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -115,12 +115,12 @@ public class Form extends JFrame {
     }
 
     private void fillTableWithUserPasswords() {
-        List<savedpasswords> passwordList = this.passwordRepository.getPasswordsByUserId(username);
+        List<SavedPasswords> passwordList = this.passwordRepository.getPasswordsByUserId(username);
     
         // Convert the list to a two-dimensional array for the table model
         Object[][] data = new Object[passwordList.size()][3];
         for (int i = 0; i < passwordList.size(); i++) {
-            savedpasswords password = passwordList.get(i);
+            SavedPasswords password = passwordList.get(i);
             data[i][0] = password.getWebsitename();
             data[i][1] = password.getEmail();
             data[i][2] = password.getPassword();
@@ -131,10 +131,10 @@ public class Form extends JFrame {
     }
     
 
-    public static void main(String[] args) {
-        Form form = new Form("q"); 
-        form.setVisible(true);
-    }
+    // public static void main(String[] args) {
+    //     Form form = new Form("q"); 
+    //     form.setVisible(true);
+    // }
 
 
 }

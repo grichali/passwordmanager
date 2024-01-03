@@ -13,7 +13,7 @@ public class UserRepository {
     public UserRepository(DatabaseConnector databaseConnector) {
         this.databaseConnector = databaseConnector;
     }
-
+    
     private User mapResultSetToUser(ResultSet resultSet) throws SQLException {
         String nom = resultSet.getString("nom");
         String prenom = resultSet.getString("prenom");

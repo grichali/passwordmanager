@@ -7,7 +7,6 @@ public class User {
      private String prenom ; 
      private String username ;
      private String password ;
-     
 
      public User(String nom, String prenom, String username, String password) {
         this.nom = nom;
@@ -50,4 +49,5 @@ public class User {
         this.username = username;
     }
 
+   
 }

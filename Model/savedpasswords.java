@@ -1,13 +1,13 @@
 package Model;
 
-public class savedpasswords {
+public class SavedPasswords {
 
     private String websitename;
     private String email;
     private String password;
     private String userid;
 
-    public savedpasswords(String websitename, String email, String password, String userid) {
+    public SavedPasswords(String websitename, String email, String password, String userid) {
         this.websitename = websitename;
         this.email = email;
         this.password = password;
