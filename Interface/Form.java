@@ -12,34 +12,31 @@ import repository.DatabaseConnector;
 import Model.SavedPasswords;
 import repository.SavedPasswordRepository;
 
-public class Form {
+public class Form extends JPanel {
 
-    private JPanel mainPanel = null;
     private JTextField websiteField, emailField, passwordField;
     private JButton addButton;
     private JTable passwordTable;
     private String username;
     private DatabaseConnector databaseConnector;
     private SavedPasswordRepository passwordRepository;
+
     private JFrame parentFrame;
-
-
     public Form(JFrame parentFrame, String username) {
         this.username = username;
-        this.databaseConnector= new DatabaseConnector();
-        this.passwordRepository = new SavedPasswordRepository(databaseConnector);
+        this.databaseConnector = new DatabaseConnector();
         this.parentFrame = parentFrame;
+        this.passwordRepository = new SavedPasswordRepository(databaseConnector);
         initUI();
         fillTableWithUserPasswords();
     }
 
     public JPanel getPanel() {
-        return this.mainPanel;
+        return this;
     }
 
     public void initUI() {
-        mainPanel = new JPanel();
-        mainPanel.setLayout(null);
+        setLayout(null);
 
         JLabel titleLabel = new JLabel("Password Manager");
         titleLabel.setFont(new Font("Courier New", Font.BOLD, 18));
@@ -72,15 +69,15 @@ public class Form {
         addButton = new JButton("Add");
         addButton.setBounds(360, 110, 150, 25);
 
-        mainPanel.add(titleLabel);
-        mainPanel.add(websiteLabel);
-        mainPanel.add(websiteField);
-        mainPanel.add(emailLabel);
-        mainPanel.add(emailField);
-        mainPanel.add(passwordLabel);
-        mainPanel.add(passwordField);
-        mainPanel.add(addButton);
-        mainPanel.add(scrollPane);
+        add(titleLabel);
+        add(websiteLabel);
+        add(websiteField);
+        add(emailLabel);
+        add(emailField);
+        add(passwordLabel);
+        add(passwordField);
+        add(addButton);
+        add(scrollPane);
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -103,12 +100,17 @@ public class Form {
                 websiteField.setText("");
                 emailField.setText("");
                 passwordField.setText("");
+
+                // After saving, update the table with the new data
+                fillTableWithUserPasswords();
+            } else {
+                JOptionPane.showMessageDialog(this, "An error occurred. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please fill in all the fields!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-
-    // After saving, update the table with the new data
     private void fillTableWithUserPasswords() {
         List<SavedPasswords> passwordList = this.passwordRepository.getPasswordsByUserId(username);
     

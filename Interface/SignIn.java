@@ -2,23 +2,24 @@
 package Interface;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import Model.User;
 import repository.DatabaseConnector;
 import repository.UserRepository;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-public class SignIn {
+import SessionManagement.SessionManager;
+public class SignIn implements ActionListener {
     private JPanel panel;
     private JLabel usernamLabel, passwordLabel, titleLabel, createAccountLabel;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton signinButton;
     private JFrame parentFrame;
+    JMenuItem signout = new JMenuItem("Sign Out");
+    SessionManager sessionManager = SessionManager.getInstance();
 
     public SignIn(JFrame parentFrame) {
         this.parentFrame = parentFrame;
@@ -84,6 +85,8 @@ public class SignIn {
             UserRepository userRepository = new UserRepository(databaseConnector);
 
             if (userRepository.loginUser(username, password)) {
+                sessionManager.loginUser(username);
+                parentFrame.getJMenuBar().getMenu(0).add(signout, 4);
                 JOptionPane.showMessageDialog(parentFrame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 Form form = new Form(parentFrame, username);
                 parentFrame.setContentPane(form.getPanel());
@@ -112,6 +115,22 @@ public class SignIn {
         } catch (Exception ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "An error occurred. Please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO Auto-generated method stub
+        Object src = e.getSource();
+        if (src.equals(signout)) {
+            if (sessionManager.isLoggedIn()) {
+                sessionManager.logoutUser();
+                parentFrame.setContentPane(new SignIn(this.parentFrame).getPanel());
+                parentFrame.revalidate();
+                parentFrame.repaint();
+            } else {
+                parentFrame.getJMenuBar().getMenu(0).remove(signout);
+            }
         }
     }
 

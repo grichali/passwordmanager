@@ -65,7 +65,7 @@ public class UserRepository {
         return null; // Return null if no user is found or an error occurs
     }
 
-    public void updateUser(User user) {
+    public boolean updateUser(User user) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE users SET nom=?, prenom=?, password=? WHERE username=?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -73,10 +73,16 @@ public class UserRepository {
                 statement.setString(2, user.getPrenom());
                 statement.setString(3, user.getEncryptedPassword());
                 statement.setString(4, user.getUsername());
-                statement.executeUpdate();
+                int isUpdated = statement.executeUpdate();
+                if (isUpdated > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
