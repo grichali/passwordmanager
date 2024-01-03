@@ -66,5 +66,10 @@ public class User {
         String encryptedPassword = BCrypt.hashpw(password, BCrypt.gensalt(12));
         return encryptedPassword;
     }
+
+    public boolean checkPassword(String password) {
+        // Implement your code to check the password here
+        return BCrypt.checkpw(password, encryptedPassword);
+    }
    
 }

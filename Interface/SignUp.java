@@ -87,7 +87,7 @@ public class SignUp {
             DatabaseConnector databaseConnector = new DatabaseConnector();
             UserRepository userRepository = new UserRepository(databaseConnector);
 
-            User user = new User(nom, prenom, username, password);
+            User user = new User(nom, prenom, username, password, false);
 
             if (userRepository.saveUser(user)) {
                 JOptionPane.showMessageDialog(parentFrame, "Sign Up successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -96,6 +96,8 @@ public class SignUp {
                 parentFrame.revalidate();
                 parentFrame.repaint();
             }
+        } else {
+            JOptionPane.showMessageDialog(parentFrame, "Please fill in all the fields!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -85,8 +85,10 @@ public class SignIn {
 
             if (userRepository.loginUser(username, password)) {
                 JOptionPane.showMessageDialog(parentFrame, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                Form form = new Form(username);
-                form.setVisible(true);
+                Form form = new Form(parentFrame, username);
+                parentFrame.setContentPane(form.getPanel());
+                parentFrame.revalidate();
+                parentFrame.repaint();
             } else {
                 JOptionPane.showMessageDialog(parentFrame, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }

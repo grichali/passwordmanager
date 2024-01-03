@@ -23,7 +23,7 @@ public class Main implements ActionListener {
     JFrame mainFen;
     JMenuBar menuBar;
     JMenu userMenu;
-    JMenuItem userAccount, quitter, addPassword, login, signup;
+    JMenuItem userAccount, quitter, addPassword, signin, signup;
     boolean isLogged = false;
 
     public void start() {
@@ -36,20 +36,20 @@ public class Main implements ActionListener {
         userAccount = new JMenuItem("User Account");
         quitter = new JMenuItem("Quitter");
         addPassword = new JMenuItem("Add Password");
-        login = new JMenuItem("Login");
+        signin = new JMenuItem("Sign In");
         signup = new JMenuItem("Sign Up");
 
         quitter.addActionListener(this);
         userAccount.addActionListener(this);
         addPassword.addActionListener(this);
-        login.addActionListener(this);
+        signin.addActionListener(this);
         signup.addActionListener(this);
 
 
 
         userMenu.add(userAccount);
         userMenu.add(addPassword);
-        userMenu.add(login);
+        userMenu.add(signin);
         userMenu.add(signup);
         userMenu.add(quitter);
         menuBar.add(userMenu);
@@ -115,7 +115,7 @@ public class Main implements ActionListener {
                 mainFen.revalidate();
                 mainFen.repaint();
             }
-        } else if (src == login) {
+        } else if (src == signin) {
             mainFen.setContentPane(new SignIn(this.mainFen).getPanel());
             mainFen.revalidate();
             mainFen.repaint();

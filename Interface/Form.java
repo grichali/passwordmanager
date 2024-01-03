@@ -1,3 +1,5 @@
+
+
 package Interface;
 
 import javax.swing.*;
@@ -10,30 +12,34 @@ import repository.DatabaseConnector;
 import Model.SavedPasswords;
 import repository.SavedPasswordRepository;
 
-public class Form extends JFrame {
+public class Form {
 
+    private JPanel mainPanel = null;
     private JTextField websiteField, emailField, passwordField;
     private JButton addButton;
     private JTable passwordTable;
     private String username;
-    DatabaseConnector databaseConnector;
-    SavedPasswordRepository passwordRepository;
+    private DatabaseConnector databaseConnector;
+    private SavedPasswordRepository passwordRepository;
+    private JFrame parentFrame;
 
-    public Form(String username) {
+
+    public Form(JFrame parentFrame, String username) {
         this.username = username;
         this.databaseConnector= new DatabaseConnector();
         this.passwordRepository = new SavedPasswordRepository(databaseConnector);
+        this.parentFrame = parentFrame;
         initUI();
         fillTableWithUserPasswords();
     }
 
-    public void initUI() {
-        setTitle("Password Manager Form");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public JPanel getPanel() {
+        return this.mainPanel;
+    }
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
+    public void initUI() {
+        mainPanel = new JPanel();
+        mainPanel.setLayout(null);
 
         JLabel titleLabel = new JLabel("Password Manager");
         titleLabel.setFont(new Font("Courier New", Font.BOLD, 18));
@@ -46,8 +52,6 @@ public class Form extends JFrame {
         websiteField = new JTextField();
         emailField = new JTextField();
         passwordField = new JTextField();
-
-
 
         String[] columnNames = {"Website", "Email", "Password"};
         Object[][] data = {};
@@ -68,19 +72,15 @@ public class Form extends JFrame {
         addButton = new JButton("Add");
         addButton.setBounds(360, 110, 150, 25);
 
-        panel.add(titleLabel);
-        panel.add(websiteLabel);
-        panel.add(websiteField);
-        panel.add(emailLabel);
-        panel.add(emailField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(addButton);
-        panel.add(scrollPane);
-
-        add(panel);
-        setResizable(false);
-        setLocationRelativeTo(null);
+        mainPanel.add(titleLabel);
+        mainPanel.add(websiteLabel);
+        mainPanel.add(websiteField);
+        mainPanel.add(emailLabel);
+        mainPanel.add(emailField);
+        mainPanel.add(passwordLabel);
+        mainPanel.add(passwordField);
+        mainPanel.add(addButton);
+        mainPanel.add(scrollPane);
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -103,17 +103,12 @@ public class Form extends JFrame {
                 websiteField.setText("");
                 emailField.setText("");
                 passwordField.setText("");
-
-                // After saving, update the table with the new data
-                fillTableWithUserPasswords();
-            } else {
-                JOptionPane.showMessageDialog(this, "An error occurred. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Please fill in all the fields!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+
+    // After saving, update the table with the new data
     private void fillTableWithUserPasswords() {
         List<SavedPasswords> passwordList = this.passwordRepository.getPasswordsByUserId(username);
     

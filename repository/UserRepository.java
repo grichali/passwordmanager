@@ -94,14 +94,18 @@ public class UserRepository {
 
     public boolean loginUser(String username, String password) {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "SELECT * FROM users WHERE username=? AND password=?";
+            String sql = "SELECT * FROM users WHERE username=?";
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setString(1, username);
-                statement.setString(2, password);
                 try (ResultSet result = statement.executeQuery()) {
-                    boolean res = result.next();
-                    System.out.println(res);
-                    return res;
+                    if (result.next()) {
+                        User user = mapResultSetToUser(result);
+                        if (user.checkPassword(password)) {
+                            return true;
+                        }
+                    } else {
+                        return false;
+                    }
                 }
             }
         } catch (SQLException e) {
