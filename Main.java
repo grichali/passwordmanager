@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import Interface.*;
 import SessionManagement.SessionManager;
@@ -104,14 +105,26 @@ public class Main implements ActionListener {
                 mainFen.repaint();
             }
         } else if (src.equals(signin)) {
-            mainFen.setContentPane(new SignIn(this.mainFen).getPanel());
-            mainFen.revalidate();
-            mainFen.repaint();
+            if(sessionManager.isLoggedIn()) {
+                JOptionPane.showMessageDialog(mainFen, "You are already logged in.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                mainFen.setContentPane(new SignIn(this.mainFen).getPanel());
+                mainFen.revalidate();
+                mainFen.repaint();
+            }
+            
         } else if (src.equals(signup)) {
-            SignUp signupForm = new SignUp(this.mainFen);
-            mainFen.setContentPane(signupForm.getPanel());
-            mainFen.revalidate();
-            mainFen.repaint();
+            if (sessionManager.isLoggedIn()) {
+                JOptionPane.showMessageDialog(mainFen, "You are already logged in.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else {
+                SignUp signupForm = new SignUp(this.mainFen);
+                mainFen.setContentPane(signupForm.getPanel());
+                mainFen.revalidate();
+                mainFen.repaint();
+            }
+           
         } else if (src.equals(signout)) {
             if (sessionManager.isLoggedIn()) {
                 sessionManager.logoutUser();
